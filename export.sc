@@ -11,6 +11,7 @@ val methodToJson = (method: Method) => {
    importCode(inputFile)
    cpg.method.filter(method => method.name != "<global>")
      .filter(method => !method.isExternal)
+     .filter(method => method.name != None && method.lineNumber != None && method.lineNumberEnd != None)
      .map(methodToJson)
      .foreach(method => File(outFile).append(method).append("\n"))
 }

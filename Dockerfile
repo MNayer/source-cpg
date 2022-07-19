@@ -33,7 +33,7 @@ USER $UNAME
 WORKDIR $HOME
 
 COPY cpg.sh .
-COPY cpgs.sh .
+#COPY cpgs.sh .
 COPY export.sc .
 
-CMD ./cpgs.sh /in /out
+CMD ./cpg.sh /in /out sources.jsonl

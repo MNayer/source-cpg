@@ -10,7 +10,7 @@ RUN usermod -a -G sudo $UNAME
 RUN echo "$UNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 RUN apt-get update -y
-RUN apt-get install -y wget git openjdk-11-jdk gcc g++
+RUN apt-get install -y wget git openjdk-11-jdk gcc g++ vim
 
 # Setup sbt
 RUN cd /opt/ && \
@@ -36,4 +36,4 @@ COPY cpg.sh .
 #COPY cpgs.sh .
 COPY export.sc .
 
-CMD ./cpg.sh /in /out sources.jsonl
+CMD ./cpg.sh /in /out

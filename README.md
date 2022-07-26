@@ -9,26 +9,23 @@
 Structure of input directory:
 ```
 <input director>
-|-- file_a.c
-|-- file_b.cpp
-`-- subdir
-| |-- file_c.cpp
-| `-- file_d.c
-|-- file_f.cpp
+|-- 1.c
+|-- 2.cpp
+|-- 3.c
 |-- ..
-`-- file_xxx.c
+`-- n.c
 ```
+Each c/cpp file must only contain exactly one function.
+Create CPGs for each input file:
 ```bash
-./run.sh <input directory> <output directory (empty)> <output_filename>
+./run.sh <input directory> <output directory (empty)>
 ```
 Structure of output directory (once the CPGs have been created):
 ```
 <output director>
-`-- <output_filename (as jsonl-Format)>
+|-- 1.dot
+|-- 2.dot
+|-- 3.dot
+|-- ..
+`-- n.dot
 ```
-The output file contains one json-encoded function per line. Each function
-contains the attributes:
-- filename - file path
-- start - line number of function's first line
-- end - line number of function's last line
-- cpg - dot of function's cpg

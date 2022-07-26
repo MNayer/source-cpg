@@ -1,17 +1,26 @@
-import org.apache.commons.lang.StringEscapeUtils.escapeJava
-import better.files.File
+import java.io.File
 
-val methodToCPG = (method: Method) =>  escapeJava(method.head.dotCpg14.l.head)
-
-val methodToJson = (method: Method) => { 
-  s"{\"filename\": \"${method.filename}\",\"name\": \"${method.name}\", \"start\": ${method.lineNumber.get}, \"end\": ${method.lineNumberEnd.get}, \"cpg\": \"${methodToCPG(method)}\"}"
+def getListOfFiles(dir: String):List[File] = {
+    /* From
+     * https://alvinalexander.com/scala/how-to-list-files-in-directory-filter-names-scala/
+     * */
+    val d = new File(dir)
+    if (d.exists && d.isDirectory) {
+        d.listFiles.filter(_.isFile).toList
+    } else {
+        List[File]()
+    }
 }
 
-@main def export(inputFile: String, outFile: String) = {
-   importCode(inputFile)
-   cpg.method.filter(method => method.name != "<global>")
-     .filter(method => !method.isExternal)
-     .filter(method => method.name != None && method.lineNumber != None && method.lineNumberEnd != None)
-     .map(methodToJson)
-     .foreach(method => File(outFile).append(method).append("\n"))
+def processFile(outputDir: String)(inputFile: String) = {
+  val name = new File(inputFile).getName().split("\\.").head
+  val outputFile = new File(outputDir, name + ".dot").getPath
+  importCode(inputFile)
+  cpg.method.filter(method => method.name != "<global>")
+    .filter(method => !method.isExternal)
+    .head.dotCpg14.l |> outputFile
+}
+
+@main def export(inputDir: String, outputDir: String) = {
+  getListOfFiles(inputDir).map(file => file.toString()).foreach(processFile(outputDir))
 }

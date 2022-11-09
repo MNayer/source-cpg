@@ -5,7 +5,7 @@ import scala.concurrent.duration._
 import scala.util._
 implicit val ec = ExecutionContext.global
 def timeoutFuture[A](f: Future[A]): Try[A] =
-  Try { Await.result(f, 30.seconds) }
+  Try { Await.result(f, 30.minutes) }
 
 def getListOfFiles(dir: String):List[File] = {
     /* From

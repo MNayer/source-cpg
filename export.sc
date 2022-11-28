@@ -25,10 +25,16 @@ def cpgToDotFile(cpg: io.shiftleft.codepropertygraph.generated.Cpg, outputFile: 
     .head.dotCpg14.l |> outputFile
 }
 
+def importCodeRunOssDataFlow(inputPath: String): io.shiftleft.codepropertygraph.Cpg = {
+  val cpg = importCode(inputPath)
+  run.ossdataflow
+  return cpg
+}
+
 def processFile(outputDir: String)(inputFile: String) = {
   val name = new File(inputFile).getName().split("\\.").head
   val outputFile = new File(outputDir, name + ".dot").getPath
-  val f = Future { importCode(inputFile) }
+  val f = Future { importCodeRunOssDataFlow(inputFile) }
   timeoutFuture(f) match {
       case Failure(exception) =>
         val file = new File(outputFile)
